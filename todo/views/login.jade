@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  form(action='/login', method='post')
+    div
+      label(for='username')= 'UserId'
+      input(type='text', name='username', value=username)
+    div
+      label(for='password')= 'Password'
+      input(type='password', name='password')
+    div
+      input(type='submit', value='Login')
+  - if (message)
+    div= message

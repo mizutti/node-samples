@@ -56,3 +56,11 @@ exports.delete = function(req, res, next) {
     res.redirect('/');
   });
 };
+
+exports.login = function(req, res, next) {
+  var username = req.param('username');
+  if (!username) {
+    username = '';
+  }
+  res.render('login', { title: 'Login', username:username, message:''});
+};

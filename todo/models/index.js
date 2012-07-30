@@ -13,7 +13,7 @@ var User = new Schema({
   , password:String
   , admin: {type:Boolean, default:false}
 });
-User.method.validPassword = function(password) {
+User.methods.validPassword = function(password) {
   return this.password === password;
 }
 
