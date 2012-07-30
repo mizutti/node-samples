@@ -62,5 +62,5 @@ exports.login = function(req, res, next) {
   if (!username) {
     username = '';
   }
-  res.render('login', { title: 'Login', username:username, message:''});
+  res.render('login', { title: 'Login', username:username});
 };

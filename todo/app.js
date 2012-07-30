@@ -68,10 +68,10 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
-app.post('/create', routes.create);
-app.get('/finish/:id', routes.finish);
-app.get('/delete/:id', routes.delete);
+app.get('/', ensureAuthenticated, routes.index);
+app.post('/create', ensureAuthenticated, routes.create);
+app.get('/finish/:id', ensureAuthenticated, routes.finish);
+app.get('/delete/:id', ensureAuthenticated, routes.delete);
 
 app.get('/login', routes.login);
 app.post('/login', function(req, res, next) {
@@ -99,3 +99,10 @@ app.get('/logout', function(req, res) {
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+};

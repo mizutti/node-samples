@@ -10,5 +10,5 @@ block content
       input(type='password', name='password')
     div
       input(type='submit', value='Login')
-  - if (message)
-    div= message
+  - if (typeof message !== 'undefined')
+    div.error(style='color:red')= message
