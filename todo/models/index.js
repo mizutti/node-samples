@@ -8,5 +8,16 @@ var Todo = new Schema({
   , created_at: { type:Date, defualt: Date.now }
 });
 
+var User = new Schema({
+  user_id:String
+  , password:String
+  , admin: {type:Boolean, default:false}
+});
+User.method.validPassword = function(password) {
+  return this.password === password;
+}
+
 mongoose.model('todo', Todo);
+mongoose.model('user', User);
 exports.Todo = db.model('todo');
+exports.User = db.model('user');
