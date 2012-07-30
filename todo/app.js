@@ -22,6 +22,13 @@ app.configure(function(){
   app.use(express.session());
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
+  
+  app.use(function(err, req, res, next) {
+    console.log('error 500');
+    console.log(err);
+    res.status(err.status || 500);
+    res.render('error/500', {title:err.message, error:err});
+  });
 });
 
 app.configure('development', function(){

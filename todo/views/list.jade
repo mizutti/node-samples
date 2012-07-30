@@ -6,6 +6,9 @@ block content
   form(action='/create', method='post')
     input(type='text', name='todo[title]')
     input(type='submit', value='Create')
+  - if (typeof errors !== 'undefined')
+    div.error(style='color:red')
+      = errors.title.message
   table
     tr
       th Title
