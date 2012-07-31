@@ -10,6 +10,11 @@ var express = require('express')
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var SessionMongoose = require('session-mongoose');
+var mongooseSessionStore = new SessionMongoose({
+  url:'mongodb://localhost:27017/todo'
+  , interval: 6000
+});
 var User = require('./models').User;
 
 passport.use(new LocalStrategy(function(username, password, done) {
@@ -50,7 +55,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser('your secret here'));
-  app.use(express.session('your secret here'));
+  app.use(express.session({secret:'your secret here', store:mongooseSessionStore}));
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(app.router);
