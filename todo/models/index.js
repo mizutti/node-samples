@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var db = mongoose.connect(config.db.url);
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
+var crypto = require('../auth/crypto');
 
 var Todo = new Schema({
   title: { type: String, required: true }
@@ -17,7 +18,7 @@ var User = new Schema({
   , admin: {type:Boolean, default:false}
 });
 User.methods.validPassword = function(password) {
-  return this.password === password;
+  return this.password === crypto.toHash(password);
 }
 
 mongoose.model('todo', Todo);

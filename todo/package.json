@@ -13,5 +13,6 @@
     , "passport-local": "0.1.6"
     , "session-mongoose": "0.0.2"
     , "config": "0.4.15"
+    , "opts": "1.2.2"
   }
 }
