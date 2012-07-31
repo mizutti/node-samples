@@ -1,14 +1,19 @@
-extends layout
-
-block content
-  form(action='/login', method='post')
-    div
-      label(for='username')= 'UserId'
-      input(type='text', name='username', value=username)
-    div
-      label(for='password')= 'Password'
-      input(type='password', name='password')
-    div
-      input(type='submit', value='Login')
-  - if (typeof message !== 'undefined')
-    div.error(style='color:red')= message
+doctype 5
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    div#content
+      form(action='/login', method='post')
+        div
+          label(for='username')= 'UserId'
+          input(type='text', name='username', value=username)
+        div
+          label(for='password')= 'Password'
+          input(type='password', name='password')
+        div
+          input(type='submit', value='Login')
+      - if (typeof message !== 'undefined')
+        div.error(style='color:red')= message
+    div#footer

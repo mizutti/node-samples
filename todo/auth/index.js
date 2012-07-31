@@ -36,3 +36,12 @@ exports.ensureAuthenticated = function ensureAuthenticated(req, res, next) {
   }
   res.redirect('/login');
 };
+
+var config = require('config');
+var SessionMongoose = require('session-mongoose');
+var mongooseSessionStore = new SessionMongoose({
+  url: config.db.url
+  , interval: 6000
+});
+
+exports.sessionStore = mongooseSessionStore;

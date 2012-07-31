@@ -8,43 +8,9 @@ var express = require('express')
   , http = require('http')
   , path = require('path');
 
-var config = require('config');
-
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var SessionMongoose = require('session-mongoose');
-var mongooseSessionStore = new SessionMongoose({
-  url: config.db.url
-  , interval: 6000
-});
-var User = require('./models').User;
-
-passport.use(new LocalStrategy(function(username, password, done) {
-  User.findOne({user_id:username}, function(err, user) {
-    if (err) {
-      return done(err);
-    }
-    
-    if (!user) {
-      return done(null, false, {message: 'Invalid username or password.'});
-    }
-    
-    if (!user.validPassword(password)) {
-      return done(null, false, {message: 'Invalid username or password.'});
-    }
-    return done(null, user);
-  });
-}));
-
-passport.serializeUser(function(user, done) {
-  done(null, user._id);
-});
-passport.deserializeUser(function(id, done) {
-  User.findOne({_id:id}, function(err, user) {
-    done(err, user);
-  });
-});
-
+var auth = require('./auth');
+var passport = auth.passport;
+var ensureAuthenticated = auth.ensureAuthenticated;
 
 var app = express();
 
@@ -57,7 +23,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser('your secret here'));
-  app.use(express.session({secret:'your secret here', store:mongooseSessionStore}));
+  app.use(express.session({secret:'your secret here', store:auth.sessionStore}));
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(app.router);
@@ -106,10 +72,3 @@ app.get('/logout', function(req, res) {
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
-
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
-};
