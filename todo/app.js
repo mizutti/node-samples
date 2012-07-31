@@ -8,11 +8,13 @@ var express = require('express')
   , http = require('http')
   , path = require('path');
 
+var config = require('config');
+
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var SessionMongoose = require('session-mongoose');
 var mongooseSessionStore = new SessionMongoose({
-  url:'mongodb://localhost:27017/todo'
+  url: config.db.url
   , interval: 6000
 });
 var User = require('./models').User;
@@ -96,7 +98,7 @@ app.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 app.get('/logout', function(req, res) {
-  req.logOut();
+  req.logout();
   req.session.destroy();
   res.redirect('/');
 });

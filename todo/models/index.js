@@ -1,5 +1,6 @@
+var config = require('config');
 var mongoose = require('mongoose');
-var db = mongoose.connect('mongodb://localhost:27017/todo');
+var db = mongoose.connect(config.db.url);
 var Schema = mongoose.Schema;
 
 var Todo = new Schema({
