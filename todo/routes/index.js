@@ -1,7 +1,7 @@
 var Todo = require('../models').Todo;
 
 exports.index = function(req, res, next) {
-  Todo.find({finished:false}, function(err, todos) {
+  Todo.find({user_id:req.user._id, finished:false}, function(err, todos) {
     if (err) {
       return next(err);
     }
@@ -11,6 +11,7 @@ exports.index = function(req, res, next) {
 
 exports.create = function(req, res, next) {
   var todo = new Todo(req.body.todo);
+  todo.user_id = req.user._id;
   todo.save(function(err) {
     if (err) {
       if (err.name !== 'ValidationError') {
@@ -34,7 +35,7 @@ exports.finish = function(req, res, next) {
   if (!id) {
     res.redirect('/');
   }
-  Todo.update({_id:id}, {$set:{finished:true}}, {upsert:false, multi:true}, function(err){
+  Todo.update({_id:id, user_id:req.user._id}, {$set:{finished:true}}, {upsert:false, multi:true}, function(err){
     if (err) {
       return next(err);
     }
@@ -48,7 +49,7 @@ exports.delete = function(req, res, next) {
   if (!id) {
     res.redirect('/');
   }
-  Todo.remove({_id:id}, function(err){
+  Todo.remove({_id:id, user_id:req.user._id}, function(err){
     if (err) {
       return next(err);
     }

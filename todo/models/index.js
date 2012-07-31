@@ -2,11 +2,13 @@ var config = require('config');
 var mongoose = require('mongoose');
 var db = mongoose.connect(config.db.url);
 var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
 
 var Todo = new Schema({
   title: { type: String, required: true }
   , finished: { type: Boolean, default: false }
   , created_at: { type:Date, defualt: Date.now }
+  , user_id: ObjectId
 });
 
 var User = new Schema({
