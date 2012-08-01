@@ -5,7 +5,7 @@ exports.index = function(req, res, next) {
     if (err) {
       return next(err);
     }
-    res.render('list', { title:'Todo List', todos:todos});
+    res.render('list', { title:'Todo List', todos:todos, csrf_token:req.session._csrf});
   });
 };
 
@@ -17,11 +17,11 @@ exports.create = function(req, res, next) {
       if (err.name !== 'ValidationError') {
         return next(err);
       }
-      Todo.find({finished:false}, function(error, todos) {
+      Todo.find({user_id:req.user._id, finished:false}, function(error, todos) {
         if (error) {
           return next(error);
         }
-        return res.render('list', { title:'Todo List', todos:todos, errors:err.errors});
+        return res.render('list', { title:'Todo List', todos:todos, errors:err.errors, csrf_token:req.session._csrf});
       });
     } else {
       // elseにしておかないと、Todo.find()の実行時にif文の外側を通ってしまう。
@@ -63,5 +63,5 @@ exports.login = function(req, res, next) {
   if (!username) {
     username = '';
   }
-  res.render('login', { title: 'Login', username:username});
+  res.render('login', { title: 'Login', username:username, csrf_token:req.session._csrf});
 };

@@ -26,6 +26,7 @@ app.configure(function(){
   app.use(express.session({secret:'your secret here', store:auth.sessionStore}));
   app.use(passport.initialize());
   app.use(passport.session());
+  app.use(express.csrf());
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
   
@@ -53,7 +54,7 @@ app.post('/login', function(req, res, next) {
       return next(err);
     }
     if (!user) {
-      return res.render('login', {title:'Login', username:req.body.username, message:'Invalid username or password.'});
+      return res.render('login', {title:'Login', username:req.body.username, csrf_token:req.session._csrf, message:'Invalid username or password.'});
     }
     req.logIn(user, function(err) {
       if (err) {
