@@ -5,7 +5,7 @@ exports.index = function(req, res, next) {
     if (err) {
       return next(err);
     }
-    res.render('list', { title:'Todo List', todos:todos, csrf_token:req.session._csrf});
+    res.render('list', { title:'Todo List', todos:todos});
   });
 };
 
@@ -21,7 +21,7 @@ exports.create = function(req, res, next) {
         if (error) {
           return next(error);
         }
-        return res.render('list', { title:'Todo List', todos:todos, errors:err.errors, csrf_token:req.session._csrf});
+        return res.render('list', { title:'Todo List', todos:todos, errors:err.errors});
       });
     } else {
       // elseにしておかないと、Todo.find()の実行時にif文の外側を通ってしまう。
@@ -63,5 +63,5 @@ exports.login = function(req, res, next) {
   if (!username) {
     username = '';
   }
-  res.render('login', { title: 'Login', username:username, csrf_token:req.session._csrf});
+  res.render('login', { title: 'Login', username:username});
 };

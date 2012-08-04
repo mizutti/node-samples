@@ -27,15 +27,18 @@ app.configure(function(){
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(express.csrf());
+  app.use(function(req, res, next) {
+    res.locals.csrf_token = req.session._csrf;
+    next();
+  });
   app.use(app.router);
-  app.use(express.static(path.join(__dirname, 'public')));
-  
   app.use(function(err, req, res, next) {
     console.log('error 500');
     console.log(err);
     res.status(err.status || 500);
     res.render('error/500', {title:err.message, error:err});
   });
+  app.use(express.static(path.join(__dirname, 'public')));
 });
 
 app.configure('development', function(){
@@ -54,7 +57,7 @@ app.post('/login', function(req, res, next) {
       return next(err);
     }
     if (!user) {
-      return res.render('login', {title:'Login', username:req.body.username, csrf_token:req.session._csrf, message:'Invalid username or password.'});
+      return res.render('login', {title:'Login', username:req.body.username, message:'Invalid username or password.'});
     }
     req.logIn(user, function(err) {
       if (err) {
