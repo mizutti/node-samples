@@ -8,13 +8,13 @@ html
       form(action='/login', method='post')
         input(type='hidden', name='_csrf', value=csrf_token)
         div
-          label(for='username')= 'UserId'
+          label(for='username')= __i('UserId')
           input(type='text', name='username', value=username)
         div
-          label(for='password')= 'Password'
+          label(for='password')= __i('Password')
           input(type='password', name='password')
         div
-          input(type='submit', value='Login')
+          input(type='submit', value=__i('Login'))
       - if (typeof message !== 'undefined')
         div.error(style='color:red')= message
     div#footer

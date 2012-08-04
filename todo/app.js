@@ -12,7 +12,13 @@ var auth = require('./auth');
 var passport = auth.passport;
 var ensureAuthenticated = auth.ensureAuthenticated;
 
+var i18n = require('i18n');
+
 var app = express();
+
+i18n.configure({
+  locales:['ja']
+});
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -29,8 +35,10 @@ app.configure(function(){
   app.use(express.csrf());
   app.use(function(req, res, next) {
     res.locals.csrf_token = req.session._csrf;
+    res.locals.__i = i18n.__;
     next();
   });
+  app.use(i18n.init);
   app.use(app.router);
   app.use(function(err, req, res, next) {
     console.log('error 500');

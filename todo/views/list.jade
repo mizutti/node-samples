@@ -2,23 +2,23 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p= __i('Welcome')
   form(action='/create', method='post')
     input(type='hidden', name='_csrf', value=csrf_token)
     input(type='text', name='todo[title]')
-    input(type='submit', value='Create')
+    input(type='submit', value=__i('Create'))
   - if (typeof errors !== 'undefined')
     div.error(style='color:red')
       = errors.title.message
   table
     tr
-      th Title
-      th Finish
-      th Delete
+      th= __i('Title')
+      th= __i('Finish')
+      th= __i('Delete')
     each todo, i in todos
       tr
         td #{todo.title}
         td
-          a(href='/finish/#{todo.id}') Finish
+          a(href='/finish/#{todo.id}')= __i('Finish')
         td
-          a(href='/delete/#{todo.id}') Delete
+          a(href='/delete/#{todo.id}')= __i('Delete')
